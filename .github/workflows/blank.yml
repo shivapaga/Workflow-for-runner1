@@ -1,0 +1,19 @@
+name: Create workflow for runner creation in another repo
+on:
+  workflow_dispatch:
+    inputs:
+      runner-repo: 
+        description: 'Repository name for runner-repo'
+        required: true
+        default: 'shivapaga/runner-repo' 
+
+jobs:
+  create-runners:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Runner Creation in runner-repo
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PERSONALACCESSTOKEN }} 
+          repository: ${{ github.event.inputs.runner-repo }}
+          event-type: create-runners
